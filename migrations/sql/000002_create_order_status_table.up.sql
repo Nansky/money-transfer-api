@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS order_status (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL
+);
+
+INSERT INTO order_status (name) VALUES ('PENDING'), ('SUCCESS'), ('FAILED');

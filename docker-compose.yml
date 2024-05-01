@@ -1,0 +1,47 @@
+version: "3"
+services:
+  db:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=P@ssw0rd
+      - POSTGRES_USER=root
+      - POSTGRES_DB=money_transfer
+    restart: on-failure
+
+  migrate:
+    image: migrate/migrate:v4.15.2
+    profiles: ["tools"]
+    volumes:
+      - ./migrations/sql:/sql
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/sql",
+        "-database",
+        "postgres://root:P@ssw0rd@db:5432/money_transfer?sslmode=disable",
+      ]
+    command: ["up"]
+    depends_on:
+      - db
+      
+  app:
+    build: .
+    ports:
+      - "6969:6969"
+    environment:
+      APP_PORT: 6969
+      APP_DB_URL: db
+      APP_DB_PORT: 5432
+      APP_DB_NAME: "money_transfer"
+      APP_DB_USERNAME: "root"
+      APP_DB_PASSWORD: "P@ssw0rd"
+      APP_DB_SSL_MODE: "disable"
+      APP_PROJECT_SECRET: "VlQtc2VydmVyLUNwbzAza1lET2MwY05VS2d0NmhuTGtLZzo"
+    depends_on:
+      - db
+    restart: on-failure  
