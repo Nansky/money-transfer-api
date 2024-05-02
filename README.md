@@ -7,7 +7,7 @@ Money Transfer APIs using Golang programming consist of 3 endpoints :
 1. `/api/v1/account_validation` : Account Validation URL endpoint that used to validate account number and name of the bank account owner.
 2. `/api/v1/transfer` : Transfer/Disbursement URL endpoint that used to transfer money to the destination account. To transfer the money, you can create a mock endpoint similar to point 1 that acts as a bank.
 3. `/api/v1/transfer/update_status` : Callback URL endpoint that used to receive callback status of transfer from the bank. (Note that this will trigger from our side for testing only, assuming sender already get callback URL when doing transfer).
-4. For authentication, i'm using hardcoded token that is stored in environment variables for simplicity and will be checked accordingly for each incoming request.
+4. For authentication, i'm using hardcoded token that is stored in environment variables for simplicity and will be checked accordingly for each incoming request. (I know this will trigger vulnerability secret leak issue but in real project hardcoded custom token will not be applied).
 
 ### How the code works
 In this simulation, i'm using `https://mockapi.io` to mock Bank API named `testbank`. At first i want to create 4 bank API but in free version it only allows me to create 2 mock resources and limited customization. `testbank` will act as a bank to do check validation and process the transfer for following point 1 and 2
